@@ -1,8 +1,8 @@
-**Taskly - To-Do List App**
+# Taskly - To-Do List App
 
 Taskly is a simple, user-friendly to-do list web application designed to help users manage their tasks efficiently. The app allows users to add, edit, delete, and mark tasks as completed, with the ability to track their progress. All task data is stored in the browser’s session storage, ensuring that tasks remain intact during a session.
 
-Features
+## Features
 
 Add New Tasks: Users can add new tasks to their to-do list.
 
