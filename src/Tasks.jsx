@@ -9,8 +9,9 @@ const Tasks = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editText, setEditText] = useState("");
   const [quote, setQuote] = useState("");
-  const [author, setauthor] = useState("");
-
+  const [author, setAuthor] = useState("");
+  const [loading, setLoading] = useState(true);
+  // For Fetching Quotes
   useEffect(() => {
     const fetchQuote = async () => {
       try {
@@ -20,7 +21,7 @@ const Tasks = () => {
         const data = await response.json();
         console.log("data: ", data);
         setQuote(data.quote);
-        setauthor(data.author);
+        setAuthor(data.author);
       } catch (error) {
         console.error("Error fetching quote:", error);
       }
@@ -28,13 +29,30 @@ const Tasks = () => {
 
     fetchQuote();
   }, []);
+  // For Fetching Todo List using dummy api
 
-  // Functionality to load saved items from local storage on initial render
   useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem("todoarr")) || [];
-    setTodoArr(savedTodos);
+    const fetchTodos = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("https://dummyjson.com/todos");
+        const data = await response.json();
+        const todos = data.todos.map((item) => ({
+          text: item.todo,
+          completed: item.completed,
+        }));
+        setTodoArr(todos);
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTodos();
   }, []);
 
+  // Save todos to local storage whenever todoArr changes
   useEffect(() => {
     localStorage.setItem("todoarr", JSON.stringify(todoArr));
   }, [todoArr]);
@@ -42,7 +60,8 @@ const Tasks = () => {
   // Functionality to add a new item to the list
   const addItemToArray = () => {
     if (inputText.trim() !== "") {
-      setTodoArr([...todoArr, { text: inputText, completed: false }]);
+      // Prepend the new task to the existing todoArr
+      setTodoArr([{ text: inputText, completed: false }, ...todoArr]);
       setInputText("");
     }
   };
@@ -52,13 +71,13 @@ const Tasks = () => {
     const updatedArr = todoArr.map((item, i) =>
       i === index ? { ...item, completed: !item.completed } : item
     );
-    setTodoArr(updatedArr);
+    setTodoArr(updatedArr); // Update the state
   };
 
   // Functionality to delete an item
   const deleteItem = (index) => {
     const updatedArr = todoArr.filter((_, i) => i !== index);
-    setTodoArr(updatedArr);
+    setTodoArr(updatedArr); // Update the state
   };
 
   // Functionality to enter edit mode for a specific item
@@ -71,7 +90,7 @@ const Tasks = () => {
   const saveEditItem = (index) => {
     const updatedArr = [...todoArr];
     updatedArr[index].text = editText;
-    setTodoArr(updatedArr);
+    setTodoArr(updatedArr); // Update the state
     setEditIndex(null);
     setEditText("");
   };
@@ -81,7 +100,7 @@ const Tasks = () => {
     setTodoArr([]);
   };
 
-  //Functionalty to  Calculate number of completed tasks
+  // Functionality to calculate number of completed tasks
   const completedTasks = todoArr.filter((item) => item.completed).length;
 
   return (
@@ -95,7 +114,7 @@ const Tasks = () => {
             {/* TOP HEADER TEXT */}
             <h1>Hi There! 👋🏻</h1>
             <h3>{quote}</h3>
-            <h3>-{author}</h3>
+            <h3>- {author}</h3>
           </div>
           <div className="completed-tasks-message">
             <h5>
@@ -115,69 +134,73 @@ const Tasks = () => {
           </div>
           <div className="todolistMain">
             {/* LIST OF ADDED TASKS */}
-            <ul id="todolist">
-              {todoArr.map((item, index) => (
-                <li
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                  key={index}
-                  id={`item${index}`}
-                  className={item.completed ? "completed" : ""}
-                >
-                  {editIndex === index ? (
-                    <input
-                      type="text"
-                      className="editInput"
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      onBlur={() => saveEditItem(index)}
-                      onKeyPress={(e) =>
-                        e.key === "Enter" && saveEditItem(index)
-                      }
-                      autoFocus
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "90%",
-                      }}
-                    >
-                      <span
-                        style={{
-                          textDecoration: item.completed
-                            ? "line-through"
-                            : "none",
-                          paddingRight: "12px",
-                          cursor: "pointer",
-                          userSelect: "none",
-                        }}
-                        onClick={() => toggleComplete(index)}
-                      >
-                        {item.completed ? "✅" : "⭕"} {item.text}
-                      </span>
+            {loading ? (
+              <div>Loading To-Do items...</div> // Display loading message
+            ) : (
+              <ul id="todolist">
+                {todoArr.map((item, index) => (
+                  <li
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                    key={index}
+                    id={`item${index}`}
+                    className={item.completed ? "completed" : ""}
+                  >
+                    {editIndex === index ? (
+                      <input
+                        type="text"
+                        className="editInput"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        onBlur={() => saveEditItem(index)}
+                        onKeyPress={(e) =>
+                          e.key === "Enter" && saveEditItem(index)
+                        }
+                        autoFocus
+                      />
+                    ) : (
                       <div
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          cursor: "pointer",
-                          gap: "1rem",
+                          justifyContent: "space-between",
+                          width: "90%",
                         }}
                       >
-                        {/* EDIT AND DELETE BUTTON */}
-                        <span onClick={() => startEditItem(index)}>Edit</span>
-                        <span onClick={() => deleteItem(index)}>&times;</span>
+                        <span
+                          style={{
+                            textDecoration: item.completed
+                              ? "line-through"
+                              : "none",
+                            paddingRight: "12px",
+                            cursor: "pointer",
+                            userSelect: "none",
+                          }}
+                          onClick={() => toggleComplete(index)}
+                        >
+                          {item.completed ? "✅" : "⭕"} {item.text}
+                        </span>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                            gap: "1rem",
+                          }}
+                        >
+                          {/* EDIT AND DELETE BUTTON */}
+                          <span onClick={() => startEditItem(index)}>Edit</span>
+                          <span onClick={() => deleteItem(index)}>&times;</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           {/* RESET BUTTON */}
           <button className="btnReset" onClick={resetList}>
