@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: "Urbanist", sans-serif;
+    ;
+}
+/* logo styling */
+.Logo {
+    width: 8rem;
+}
+/* Avatar styling */
+
+.Avatar {
+    width: 3rem;
+}
+/* Navbar styling */
+
+.Navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3rem;
+    user-select: none;
+}
+/* Task styling */
+
+.parentMain {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.GrandParentDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.MainHeaderDiv {
+    display: flex;
+    flex-direction: column;
+    line-height: 5%;
+}
+
+
+.MainHeaderDiv>h1 {
+    font-weight: 500;
+}
+
+.MainHeaderDiv>h3 {
+    font-weight: 200;
+    font-size: 0.95rem;
+}
+
+/* Input styling */
+.inputTaskDiv {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.inputTaskDiv>input {
+    padding: 0.5rem 2rem;
+    border-radius: 5rem;
+}
+
+.inputBox {
+    border: 1px solid rgba(80, 80, 80, 0.311);
+}
+
+.inputTaskDiv button {
+    background-color: #51AF4F;
+    color: white;
+    border-radius: 1rem;
+    padding: 0 1rem;
+    border: none;
+}
+
+.completed-tasks-message {
+    background-color: #ecfaf0;
+    border-radius: 1rem;
+}
+
+.completed-tasks-message h5 {
+    padding: 0 1rem;
+}
+
+#todolist {
+    padding: 0;
+}
+
+#todolist li {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    background-color: #F6F7FB;
+    border-radius: 1rem;
+
+
+}
+
+.editInput {
+    width: 80%;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    border: #51AF4F;
+}
+
+#item {
+    display: flex;
+}
+/* Reset Button Styling */
+.btnReset {
+    background-color: rgb(243, 105, 105);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.5rem;
+}
