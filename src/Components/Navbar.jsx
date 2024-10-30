@@ -3,7 +3,6 @@ import Logo from "../assets/Logo.png";
 
 const Navbar = () => {
   return (
-    // Navbar Styling
     <div className="Navbar">
       <div className="LogoDiv">
         <img className="Logo" src={Logo} />
