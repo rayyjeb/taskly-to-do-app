@@ -5,19 +5,40 @@ const Tasks = () => {
   const [todoArr, setTodoArr] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editText, setEditText] = useState("");
+  const [quote, setQuote] = useState("");
+  const [author, setauthor] = useState("");
 
-  // Functionalty to Load saved items from session storage on initial render
+  // Function to fetch quote from the API
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await fetch(
+          "https://quotes-api-self.vercel.app/quote"
+        );
+        const data = await response.json();
+        console.log("data: ", data);
+        setQuote(data.quote);
+        setauthor(data.author);
+      } catch (error) {
+        console.error("Error fetching quote:", error);
+      }
+    };
+
+    fetchQuote();
+  }, []);
+
+  // Functionality to load saved items from session storage on initial render
   useEffect(() => {
     const savedTodos = JSON.parse(sessionStorage.getItem("todoarr")) || [];
     setTodoArr(savedTodos);
   }, []);
 
-  //Functionalty to  Update session storage whenever the todoArr changes
+  // Functionality to update session storage whenever the todoArr changes
   useEffect(() => {
     sessionStorage.setItem("todoarr", JSON.stringify(todoArr));
   }, [todoArr]);
 
-  //Functionalty to  Add a new item to the list
+  // Functionality to add a new item to the list
   const addItemToArray = () => {
     if (inputText.trim() !== "") {
       setTodoArr([...todoArr, { text: inputText, completed: false }]);
@@ -25,7 +46,7 @@ const Tasks = () => {
     }
   };
 
-  //Functionalty to  Toggle complete status
+  // Functionality to toggle complete status
   const toggleComplete = (index) => {
     const updatedArr = todoArr.map((item, i) =>
       i === index ? { ...item, completed: !item.completed } : item
@@ -33,19 +54,19 @@ const Tasks = () => {
     setTodoArr(updatedArr);
   };
 
-  //Functionalty to  Delete an item
+  // Functionality to delete an item
   const deleteItem = (index) => {
     const updatedArr = todoArr.filter((_, i) => i !== index);
     setTodoArr(updatedArr);
   };
 
-  //Functionalty to  Enter edit mode for a specific item
+  // Functionality to enter edit mode for a specific item
   const startEditItem = (index) => {
     setEditIndex(index);
     setEditText(todoArr[index].text);
   };
 
-  //Functionalty to  Save the edited item
+  // Functionality to save the edited item
   const saveEditItem = (index) => {
     const updatedArr = [...todoArr];
     updatedArr[index].text = editText;
@@ -54,7 +75,7 @@ const Tasks = () => {
     setEditText("");
   };
 
-  //Functionalty to  Reset the todo list
+  // Functionality to reset the todo list
   const resetList = () => {
     setTodoArr([]);
   };
@@ -68,7 +89,8 @@ const Tasks = () => {
         <div className="MainHeaderDiv">
           {/* TOP HEADER TEXT */}
           <h1>Hi There! 👋🏻</h1>
-          <h3>Stay Organized, Stay Ahead!</h3>
+          <h3>{quote}</h3>
+          <h3>-{author}</h3>
         </div>
         <div className="completed-tasks-message">
           <h5>

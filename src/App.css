@@ -4,15 +4,18 @@
     font-family: "Urbanist", sans-serif;
     ;
 }
+
 /* logo styling */
 .Logo {
     width: 8rem;
 }
+
 /* Avatar styling */
 
 .Avatar {
     width: 3rem;
 }
+
 /* Navbar styling */
 
 .Navbar {
@@ -22,6 +25,7 @@
     margin: 3rem;
     user-select: none;
 }
+
 /* Task styling */
 
 .parentMain {
@@ -49,6 +53,9 @@
 .MainHeaderDiv>h3 {
     font-weight: 200;
     font-size: 0.95rem;
+    width: 21rem;
+    line-height: 120%;
+    letter-spacing: 0.3px;
 }
 
 /* Input styling */
@@ -108,6 +115,7 @@
 #item {
     display: flex;
 }
+
 /* Reset Button Styling */
 .btnReset {
     background-color: rgb(243, 105, 105);
