@@ -47,7 +47,7 @@ body {
     overflow-y: scroll;
     overflow-x: hidden;
     height: 80vh;
-    width: 30rem;
+    width: 30vmax
 }
 
 /* Hides scrollbar in parentMain */
@@ -70,13 +70,13 @@ body {
 }
 
 /* Styling for main header text */
-.MainHeaderDiv > h1 {
+.MainHeaderDiv>h1 {
     font-weight: 500;
     font-size: 1.95rem;
 }
 
 /* Subheader text styling */
-.MainHeaderDiv > h3 {
+.MainHeaderDiv>h3 {
     font-weight: 200;
     font-size: 0.95rem;
     width: 21rem;
@@ -91,7 +91,7 @@ body {
     width: 100%;
 }
 
-.inputTaskDiv > input {
+.inputTaskDiv>input {
     padding: 1rem 0;
     width: 100%;
     padding-left: 20px;
