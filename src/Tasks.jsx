@@ -29,7 +29,8 @@ const Tasks = () => {
 
     fetchQuote();
   }, []);
-  // For Fetching Todo List using dummy api
+
+  // For Fetching To-do List using dummy api
 
   useEffect(() => {
     const fetchTodos = async () => {
